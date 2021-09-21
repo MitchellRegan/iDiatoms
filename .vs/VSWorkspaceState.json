@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\assets",
+    "\\components",
+    "\\components\\buttons",
+    "\\components\\shared",
+    "\\components\\swipeCards",
+    "\\functions",
+    "\\screens",
+    "\\styles"
+  ],
+  "SelectedNode": "\\components\\shared\\Header.js",
+  "PreviewInSolutionExplorer": false
+}
