@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 //Styles
 import Colors from '../styles/Colors';
 import Fonts from '../styles/Fonts';
-//Libraries
-import AsyncStorageLibrary from '../functions/AsyncStorageLibrary';
-import ErrorAlertLibrary from '../functions/ErrorAlertLibrary';
 //Components
 import Header from '../components/shared/Header';
 
@@ -29,7 +26,7 @@ export default class HomeScreen extends Component {
                     <Text style={styles.buttonText}>Analyze Image</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.tabButton}>
+                <TouchableOpacity style={styles.tabButton} onPress={() => this.props.navigation.navigate("About")}>
                     <Text style={styles.buttonText}>About</Text>
                 </TouchableOpacity>
             </View>
@@ -45,13 +42,14 @@ const styles = StyleSheet.create({
 
     buttonText: {
         fontFamily: Fonts.monospace,
-        color: Colors.blackText,
+        color: Colors.whiteText,
         fontSize: 22,
         padding: 15,
         alignSelf: 'center',
     },
 
     tabButton: {
+        backgroundColor: Colors.primary,
         borderColor: Colors.blackText,
         borderWidth: 2,
         borderLeftWidth: 0,

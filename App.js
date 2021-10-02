@@ -8,6 +8,7 @@ import { MenuProvider } from 'react-native-popup-menu';
 //Screens
 import HomeScreen from './screens/HomeScreen';
 import AnalyzeScreen from './screens/AnalyzeScreen';
+import AboutScreen from './screens/AboutScreen';
 //Styles
 import Colors from './styles/Colors';
 
@@ -22,6 +23,7 @@ export default function App() {
                     <Stack.Navigator headerMode={"none"}>
                         <Stack.Screen name="Home" component={HomeScreen} />
                         <Stack.Screen name="Analyze" component={AnalyzeScreen} />
+                        <Stack.Screen name="About" component={AboutScreen} />
                     </Stack.Navigator>
 
                     {/*<Drawer.Navigator drawerPosition={'right'}>

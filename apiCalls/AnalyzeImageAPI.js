@@ -22,7 +22,7 @@ const AnalyzeImageAPI = {
                 return data;
             })
             .catch((error) => {
-                ErrorAlertLibrary.DisplayError("AnalyzeImageAPI ERROR", error);
+                ErrorAlertLibrary.DisplayError("AnalyzeImage API Call ERROR", error);
             });
 
         return callData;

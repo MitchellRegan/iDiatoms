@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView, Alert, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Alert, Image, Dimensions } from 'react-native';
 //import * as ImagePicker from 'react-native-image-picker';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
@@ -13,8 +13,6 @@ import AnalyzeImageAPI from '../apiCalls/AnalyzeImageAPI';
 //Components
 import Header from '../components/shared/Header';
 
-//The most number of characters a question or answer can be
-const MAXTEXTLENGTH = 256;
 //The width of the screen
 const SCREENWIDTH = Dimensions.get("window").width;
 
@@ -113,26 +111,24 @@ export default class AnalyzeScreen extends Component {
                     showBackButton={true}
                 />
 
-                <Text style={styles.titleText}>New Card</Text>
-                <Text style={styles.subtitleText}>For {this.props.route.params.setName}</Text>
+                <Text style={styles.titleText}>Analyze Image</Text>
 
                 <ScrollView style={styles.scrollView}>
-
                     <View style={styles.imageView}>
-                        <View style={styles.imageViewTextLine}>
-                            <Text style={styles.inputTitleText}>Diatom Image</Text>
-
-                            <TouchableOpacity style={styles.imageUploadButton} onPress={() => this.GetPermissionsAsync(true)}>
-                                {(this.state.diatomImage == null) && <Text style={styles.imageUploadText}>Upload Image</Text>}
-                                {(this.state.diatomImage != null) && <Text style={styles.imageUploadText}>Change Image</Text>}
-                            </TouchableOpacity>
-                        </View>
-
                         {(this.state.diatomImage != null) && <Image source={{ uri: this.state.diatomImage }} style={styles.image} />}
 
-                        {(this.state.diatomImage != null) && <TouchableOpacity style={styles.imageUploadButton} onPress={() => this.ClearImage(true)}>
-                            <Text style={styles.imageUploadText}>Remove Image</Text>
+                        {(this.state.diatomImage == null) && <TouchableOpacity style={styles.imageUploadButton} onPress={() => this.GetPermissionsAsync(true)}>
+                            <Text style={styles.imageUploadText}>Click To Select Image</Text>
                         </TouchableOpacity>}
+
+                        {(this.state.diatomImage != null) && <View style={styles.changeRowView}>
+                            <TouchableOpacity style={styles.imageChangeButton} onPress={() => this.GetPermissionsAsync(true)}>
+                                <Text style={styles.imageChangeText}>Change Image</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.imageChangeButton} onPress={() => this.ClearImage(true)}>
+                                <Text style={styles.imageChangeText}>Remove Image</Text>
+                            </TouchableOpacity>
+                        </View>}
                     </View>
                 </ScrollView>
 
@@ -145,7 +141,7 @@ export default class AnalyzeScreen extends Component {
 
                     <TouchableOpacity
                         style={styles.createButton}
-                        onPress={() => this.CreateNewCard()}
+                        onPress={() => this.SendToServer(false)}
                         disabled={(this.state.diatomImage == null)}
                     >
                         {(this.state.diatomImage != null) && <Text style={styles.createText}>Analyze</Text>}
@@ -164,10 +160,12 @@ const styles = StyleSheet.create({
     },
 
     titleText: {
-        fontFamily: Fonts.serif,
+        fontFamily: Fonts.monospace,
+        fontSize: 26,
+        color: Colors.blackText,
         fontWeight: 'bold',
-        fontSize: 24,
         alignSelf: 'center',
+        marginTop: 20
     },
 
     subtitleText: {
@@ -181,37 +179,13 @@ const styles = StyleSheet.create({
         flex: 1
     },
 
-    inputView: {
-        width: '85%',
-        alignSelf: 'center',
-        marginTop: 15,
-    },
-
     inputTitleText: {
         fontFamily: Fonts.serif,
         fontWeight: 'bold',
         fontSize: 16,
     },
 
-    textInput: {
-        backgroundColor: Colors.setWhite,
-        borderRadius: 5,
-        borderColor: Colors.setBlack,
-        borderWidth: 1,
-        paddingLeft: 5,
-        paddingRight: 5,
-        paddingTop: 2,
-        paddingBottom: 2
-    },
-
-    textLength: {
-        fontFamily: Fonts.monospace,
-        fontSize: 10,
-        alignSelf: 'flex-end'
-    },
-
     imageView: {
-        width: '85%',
         alignSelf: 'center',
         marginTop: 15,
     },
@@ -222,36 +196,61 @@ const styles = StyleSheet.create({
     },
 
     image: {
-        borderWidth: 1,
-        borderColor: '#000',
-        margin: 3,
-        height: SCREENWIDTH - 80,
-        width: SCREENWIDTH - 80,
+        width: SCREENWIDTH - 15,
+        height: SCREENWIDTH - 15,
+        borderRadius: 5,
+        borderWidth: 2,
+        borderColor: Colors.blackText,
         alignSelf: 'center',
     },
 
     imageUploadButton: {
+        width: SCREENWIDTH - 15,
+        height: SCREENWIDTH - 15,
+        backgroundColor: Colors.whiteText,
         borderRadius: 5,
-        borderColor: '#000',
-        borderWidth: 1,
-        backgroundColor: Colors.setWhite,
+        borderColor: Colors.disabledText,
+        borderWidth: 2,
+        borderStyle: 'dashed',
         alignSelf: 'center',
+        justifyContent: 'center',
     },
 
     imageUploadText: {
-        fontSize: 14,
+        flex: 1,
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        color: Colors.disabledText,
+        fontSize: 34,
         paddingLeft: 12,
         paddingRight: 12,
         paddingTop: 6,
         paddingBottom: 6,
     },
 
-    requiredText: {
-        fontFamily: Fonts.serif,
-        fontSize: 12,
-        color: Colors.redText,
-        alignSelf: 'center',
-        marginTop: 15,
+    changeRowView: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 10,
+    },
+
+    imageChangeButton: {
+        backgroundColor: Colors.whiteText,
+        borderRadius: 5,
+        borderColor: Colors.blackText,
+        borderWidth: 2,
+    },
+
+    imageChangeText: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        color: Colors.blackText,
+        fontSize: 16,
+        fontFamily: Fonts.monospace,
+        paddingLeft: 12,
+        paddingRight: 12,
+        paddingTop: 6,
+        paddingBottom: 6,
     },
 
     promptButtonView: {
@@ -296,6 +295,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
         padding: 15,
-        color: '#bbb'
+        color: Colors.disabledText
     }
 })
