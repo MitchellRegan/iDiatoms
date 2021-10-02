@@ -22,7 +22,7 @@ export default class Header extends Component {
      * Displays a hidden alert with build info
      * */
     BuildDetails = function () {
-        Alert.alert("HELLO!", "This app was developed by Mitch Regan on August 5, 2021\nBuild: v" + App.expo.version);
+        Alert.alert("HELLO!", "This app was developed by Mitch Regan on October 1st, 2021\nBuild: v" + App.expo.version);
     }
 
 
@@ -35,7 +35,7 @@ export default class Header extends Component {
                 {(!this.props.showBackButton) && <View style={{ width: 30 }} />}
 
                 <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => this.BuildDetails()}>
-                    <Text style={styles.headerText}>FLASHCARDS</Text>
+                    <Text style={styles.headerText}>iDiatoms</Text>
                 </TouchableOpacity>
 
                 <View style={{ width: 30 }} />
@@ -53,8 +53,6 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         backgroundColor: Colors.primary,
-        borderBottomEndRadius: 100,
-        borderBottomStartRadius: 100,
     },
 
     backButton: {
